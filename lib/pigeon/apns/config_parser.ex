@@ -43,11 +43,10 @@ defmodule Pigeon.APNS.ConfigParser do
 
   @doc false
   def file_path(nil), do: nil
-
   def file_path(path) when is_binary(path) do
     if :filelib.is_file(path), do: Path.expand(path), else: nil
   end
-
+  def file_path({:system, _}), do: nil
   def file_path({app_name, path}) when is_atom(app_name),
     do: Path.expand(path, :code.priv_dir(app_name))
 
