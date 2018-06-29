@@ -52,9 +52,9 @@ defmodule Pigeon.APNS.ConfigParser do
     do: Path.expand(path, :code.priv_dir(app_name))
 
   @doc false
+  def cert({:system, env_var}), do: System.get_env(env_var) |> cert()
   def cert({_app_name, _path}), do: nil
   def cert(nil), do: nil
-
   def cert(bin) do
     case :public_key.pem_decode(bin) do
       [{:Certificate, cert, _}] -> cert
@@ -63,9 +63,9 @@ defmodule Pigeon.APNS.ConfigParser do
   end
 
   @doc false
+  def key({:system, env_var}), do: System.get_env(env_var) |> key()
   def key({_app_name, _path}), do: nil
   def key(nil), do: nil
-
   def key(bin) do
     case :public_key.pem_decode(bin) do
       [{:RSAPrivateKey, key, _}] -> {:RSAPrivateKey, key}
